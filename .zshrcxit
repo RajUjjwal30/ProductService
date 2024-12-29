@@ -1,0 +1,8 @@
+export JAVA_HOME=$(/usr/libexec/java_home)
+export PATH=$JAVA_HOME/bin:$PATH
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+${PATH}:/usr/local/mysql/binexport PATH="/usr/local/bin:$PATH"export PATH="/opt/homebrew/bin:$PATH"export PATH="/usr/local/mysql/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+
+
