@@ -35,7 +35,17 @@ public class FakeStoreProductService implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return new ArrayList<>();
+        //using [] instead of List because of TYpe Eraser and Generics
+        //because URL is getting hit at the runtime .
+        FakeStoreProductDto[] fakeStoreProductDtos = restTemplate.getForObject(
+                "https://fakestoreapi.com/products",
+                FakeStoreProductDto[].class
+        );
+        List<Product> products = new ArrayList<>();
+        for(FakeStoreProductDto fakeStoreProductDto: fakeStoreProductDtos){
+            products.add(convertFakeStoreProductDtoToProduct(fakeStoreProductDto));
+        }
+        return products;
     }
 
     private Product convertFakeStoreProductDtoToProduct(FakeStoreProductDto fakeStoreProductDto){
