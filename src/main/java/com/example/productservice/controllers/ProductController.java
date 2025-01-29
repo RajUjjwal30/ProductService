@@ -1,8 +1,11 @@
 package com.example.productservice.controllers;
 
 
+import com.example.productservice.exceptions.ProductNotFoundException;
 import com.example.productservice.models.Product;
 import com.example.productservice.services.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,8 +26,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable("id") Long id){
-        return productService.getSingleProduct(id);
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
+
+        ResponseEntity<Product> response = new ResponseEntity<>(
+                    productService.getSingleProduct(id),
+                HttpStatus.OK
+        );
+
+        return response;
     }
 
 
@@ -48,5 +57,16 @@ public class ProductController {
     public Product replaceProduct(@PathVariable("id") Long productId, @RequestBody Product product){
         return null;
     }
+
+//    @ExceptionHandler(ArithmeticException.class)
+//    public ResponseEntity<String> handleArithmeticException(){
+//
+//        ResponseEntity<String> response = new ResponseEntity<>(
+//                "Arithmetic Exception has occurred, inside the Product Controller !",
+//                HttpStatus.INTERNAL_SERVER_ERROR
+//        ) ;
+//
+//        return response;
+//    }
 
 }
