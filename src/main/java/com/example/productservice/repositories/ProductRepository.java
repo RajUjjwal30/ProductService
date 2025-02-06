@@ -1,8 +1,10 @@
 package com.example.productservice.repositories;
 
 import com.example.productservice.models.Product;
+import com.example.productservice.projections.ProductWithIdAndTitle;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,6 +35,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Override
     List<Product> findAll(Sort sort);
+
+
+    //HQL(Hibernate Query Language)
+            //what will be the return type when you are only selecting id and title ??
+                //if you want to pass parameter then :x
+    @Query("select p.id as id , p.title as title from Product p ")// :x
+    List<ProductWithIdAndTitle> randomSearchMethod();// x
 }
 
 /*
