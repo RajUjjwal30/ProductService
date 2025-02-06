@@ -4,6 +4,7 @@ package com.example.productservice.controllers;
 import com.example.productservice.exceptions.ProductNotFoundException;
 import com.example.productservice.models.Product;
 import com.example.productservice.services.ProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,8 @@ public class ProductController {
     //but, we can not instantiate an Interface
     //dependency injection
     private ProductService productService;
-
-    public ProductController(ProductService productService) {
+//while injecting the bean using @Qualifier(Best to use) to tell springboot to use which implementation
+    public ProductController(@Qualifier("selfProductService") ProductService productService) {
         this.productService = productService;
     }
 
@@ -42,20 +43,21 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    public Product deleteProduct(Long productId){
-        return null;
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable("id") Long productId){
+          productService.deleteProduct(productId);
     }
 
     //Patch --> http:localhost/8080/products/1(id)  --> we are sending the req body also (the product which we want to update and the updated value)
     @PatchMapping("/{id}")
-    public Product updateProduct( @PathVariable("id") Long id, @RequestBody Product product){
+    public Product updateProduct( @PathVariable("id") Long id, @RequestBody Product product) throws ProductNotFoundException {
 
         return productService.updateProduct(id, product);
     }
 
     @PutMapping("/{id}")
-    public Product replaceProduct(@PathVariable("id") Long productId, @RequestBody Product product){
-        return null;
+    public Product replaceProduct(@PathVariable("id") Long id, @RequestBody Product product){
+        return productService.replaceProduct(id, product);
     }
 
 //    @ExceptionHandler(ArithmeticException.class)
@@ -68,5 +70,10 @@ public class ProductController {
 //
 //        return response;
 //    }
+
+    @PostMapping
+    public Product addNewProduct(@RequestBody Product product){
+        return productService.addNewProduct(product);
+    }
 
 }
